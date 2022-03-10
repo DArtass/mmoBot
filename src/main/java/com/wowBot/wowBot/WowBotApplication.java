@@ -1,13 +1,13 @@
-package com.wowfishbot.wowfishbot;
+package com.wowBot.wowBot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WowfishbotApplication {
+public class WowBotApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WowfishbotApplication.class, args);
+		SpringApplication.run(WowBotApplication.class, args);
 	}
 
 }

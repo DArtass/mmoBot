@@ -8,11 +8,11 @@
 		<version>2.6.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.fishingbot</groupId>
-	<artifactId>fishingbot</artifactId>
+	<groupId>com.wowBot</groupId>
+	<artifactId>wowBot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>fishingbot</name>
-	<description>Spring Boot project for wow fishing bot</description>
+	<name>wowBot</name>
+	<description>Spring project for wow fishing bot </description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
