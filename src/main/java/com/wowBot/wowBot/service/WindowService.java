@@ -1,4 +1,4 @@
-package com.wowBot.wowBot.Controller;
+package com.wowBot.wowBot.service;
 
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class WindowService {
 
     public void activateWowWindow() {
         try {
-            Runtime.getRuntime().exec("csript @ACTIVATE_SCRIPT_PATH").waitFor();
+            Runtime.getRuntime().exec("cscript " + ACTIVATE_SCRIPT_PATH).waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
