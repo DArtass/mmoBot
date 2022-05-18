@@ -20,6 +20,7 @@ public class LogService {
 
     public void saveScreenshot() {
         try {
+            System.out.println("saveScreenshot");
             Date currDate = new Date();
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");

@@ -25,16 +25,18 @@
         <h1>Settings</h1>
 
         <form method="post">
-        countActsInLog
-        <input type="number" name="countActsInLog" value="20" placeholder="Count acts in each part of log screenshot" class="form-control"><br>
-        maxCountErrors
-        <input type="number" name="maxCountErrors" value="100" placeholder="Max count of errors" class="form-control"><br>
-        commandPetCount
-        <input type="number" name="commandPetCount" value="3" placeholder="command Pet Count" class="form-control"><br>
-        screenNumber
-        <input type="number" name="screenNumber" value="1" placeholder="screen Number 0 1 2" class="form-control"><br>
+            countActsInLog
+            <input type="number" name="countActsInLog" value="20" placeholder="Count acts in each part of log screenshot" class="form-control"><br>
+            maxCountErrors
+            <input type="number" name="maxCountErrors" value="100" placeholder="Max count of errors" class="form-control"><br>
+            commandPetCount
+            <input type="number" name="commandPetCount" value="5" placeholder="command Pet Count" class="form-control"><br>
+            screenNumber
+            <input type="number" name="screenNumber" value="1" placeholder="screen Number 0 1 2" class="form-control"><br>
+            stopTime
+            <input type="time" name="stopTime" value="06:55" placeholder="stopTime" class="form-control"><br>
 
-        <input formaction="/run" type="submit" class="btn btn-success" value ="Start bot"/>
+            <input formaction="/run" type="submit" class="btn btn-success" value ="Start bot"/>
         </form>
 
         <footer th:insert="blocks/footer :: footer"></footer>

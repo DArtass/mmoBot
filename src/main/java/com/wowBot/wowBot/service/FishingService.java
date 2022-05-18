@@ -22,12 +22,12 @@ public class FishingService {
     }
 
     public Point getFloatXY() {
-        byte[] floatAreaBytes = screenshotService.screenshot();
+        byte[] floatAreaBytes = screenshotService.screenshot(screenshotService.getFloatScreenBounds());
         Mat floatAreaMat = matMapper.map(floatAreaBytes);
         Mat floatMap = matMapper.map(TemplateService.FLOAT_BYTES);
 
         Core.MinMaxLocResult matchResult = templateService.matchTemplate(floatAreaMat, floatMap);
-        Point maxLoc = matchResult.maxLoc;
+        Point maxLoc = new Point(matchResult.maxLoc.x +  screenshotService.getFloatBounds().x, matchResult.maxLoc.y);
 
         return screenshotService.convertToGlobal(maxLoc);
     }
@@ -64,7 +64,7 @@ public class FishingService {
     public boolean checkPecking(Point xy) {
         Long time = System.currentTimeMillis();
         boolean result = false;
-        while (System.currentTimeMillis() - time < 30000 & !result) {
+        while (System.currentTimeMillis() - time < 21000 & !result) {
             Point floatxy = getFloatXY();
 
             if (!nearby(xy, floatxy)) {

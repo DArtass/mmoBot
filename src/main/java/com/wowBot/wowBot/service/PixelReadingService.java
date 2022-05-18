@@ -7,12 +7,10 @@ import java.awt.*;
 @Service
 public class PixelReadingService {
 
-    private GameActionService gameActionService;
     private Robot robot;
     private ScreenshotService screenshotService;
 
-    public PixelReadingService(GameActionService gameActionService, ScreenshotService screenshotService) {
-        this.gameActionService = gameActionService;
+    public PixelReadingService(ScreenshotService screenshotService) {
         this.screenshotService = screenshotService;
         try {
             this.robot = new Robot();
@@ -21,41 +19,31 @@ public class PixelReadingService {
         this.screenshotService = screenshotService;
     }
 
-    public boolean havePM() {
-        Rectangle rectangle = screenshotService.getScreenBounds();
-        Color color = robot.getPixelColor(rectangle.x + rectangle.width/2, rectangle.height/2);
-        return color.equals(new Color(1,0,0));//will make plugin info
-    }
+    public boolean isPixelColor(Point pixel, Color color) {
+        Point globPoint = screenshotService.convertToGlobal(pixel);
+        Color currColor = robot.getPixelColor(globPoint.x,globPoint.y);
 
-    public boolean charIsDead() {
-        Rectangle rectangle = screenshotService.getScreenBounds();
-        Color color = robot.getPixelColor(rectangle.x + rectangle.width/2, rectangle.height/2);
-        return color.equals(new Color(1,0,0));//will make plugin info
-    }
-
-    public boolean haveProblem() {
-        boolean result = havePM() | charIsDead();
-        if (result) {
-            screenshotService.screenshot();
-            gameActionService.exit();
-        }
-        return result;
+        return color.equals(currColor);
     }
 
     public boolean isPetBattleActive() {
-        Rectangle rectangle = screenshotService.getScreenBounds();
-        Color color = robot.getPixelColor(rectangle.x + (int) (rectangle.width / 27.5 * 0.25),
-                (int) (rectangle.height / 15.5 * 0.25));
-
-        return color.equals(new Color(0,0,0));
+        return isPixelColor(new Point(15, 15), new Color(0,0,0));
     }
 
     public boolean isFishingActive() {
-        Rectangle rectangle = screenshotService.getScreenBounds();
-        Color color = robot.getPixelColor(rectangle.x + (int) (rectangle.width / 27.5 * 0.25),
-                (int) (rectangle.height / 15.5 * 0.25));
+        return isPixelColor(new Point(15, 15), new Color(255,255,255));
+    }
 
-        return !color.equals(new Color(255,255,255));
+    public boolean havePM() {
+        return isPixelColor(new Point(439, 562), new Color(173, 101, 183)); //change
+    }
+
+    public boolean charIsDead() {
+        return isPixelColor(new Point(200, 800), new Color(150,150,150)); //change
+    }
+
+    public boolean inMasterBattle() {
+        return isPixelColor(new Point(1042, 1027), new Color(197, 194, 180)); //change
     }
 
     public void getPixelInfo() {
@@ -77,5 +65,25 @@ public class PixelReadingService {
                 (rectangle.height * 588 / 1080)).getRed();
 
         return Math.abs(redEnter - redPlace1) < tolerance | Math.abs(redEnter - redPlace2) < tolerance;
+    }
+
+    public org.opencv.core.Point getXYPosition() {
+        Rectangle rectangle = screenshotService.getScreenBounds();
+        Color colorX = robot.getPixelColor(rectangle.x + rectangle.width / 1920 * 15,
+                rectangle.height / 1080 * 45);
+
+        Color colorY = robot.getPixelColor(rectangle.x + rectangle.width / 1920 * 15,
+                rectangle.height / 1080 * 75);
+
+
+        return new org.opencv.core.Point((double) (colorX.getRed() + colorX.getGreen() / 255) / 255 * 100,
+                (double) (colorY.getRed() + colorY.getGreen() / 255) / 255 * 100);
+    }
+
+    public double getFacing() {
+        Rectangle rectangle = screenshotService.getScreenBounds();
+        Color color = robot.getPixelColor(rectangle.x + rectangle.width / 1920 * 15,
+                rectangle.height / 1080 * 45);
+        return color.getBlue() * 7 / 255;
     }
 }

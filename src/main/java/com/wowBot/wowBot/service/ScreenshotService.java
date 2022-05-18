@@ -19,8 +19,8 @@ public class ScreenshotService {
     private Robot robot;
     private Rectangle screenBounds;
     private int screenNumber = 1;
-    //public static Rectangle FLOAT_BOUNDS;
-    //public static Rectangle FLOAT_SCREEN_BOUNDS;
+    private Rectangle floatBounds;
+    private Rectangle floatScreenBounds;
 
     //@Lazy
     public ScreenshotService() {
@@ -32,12 +32,18 @@ public class ScreenshotService {
         GraphicsDevice[] screens = ge.getScreenDevices();
         screenBounds = screens[screenNumber].getDefaultConfiguration().getBounds();
 
-        //FLOAT_BOUNDS = new Rectangle((int) (SCREEN_BOUNDS.width * 0.4), 0, (int) (SCREEN_BOUNDS.width * 0.2), (int) (SCREEN_BOUNDS.height * 0.2));
-        //FLOAT_SCREEN_BOUNDS = new Rectangle((int) (SCREEN_BOUNDS.width * 0.4) + SCREEN_BOUNDS.x, 0, (int) (SCREEN_BOUNDS.width * 0.2), (int) (SCREEN_BOUNDS.height * 0.2));
+        floatBounds = new Rectangle((int) (screenBounds.width * 0.4), 0, (int) (screenBounds.width * 0.2), (int) (screenBounds.height * 0.2));
+        floatScreenBounds = new Rectangle((int) (screenBounds.width * 0.4) + screenBounds.x, 0, (int) (screenBounds.width * 0.2), (int) (screenBounds.height * 0.2));
     }
 
     public Rectangle getScreenBounds() {
         return screenBounds;
+    }
+    public Rectangle getFloatBounds() {
+        return floatBounds;
+    }
+    public Rectangle getFloatScreenBounds() {
+        return floatScreenBounds;
     }
 
     public void changeScreenNumber(int screenNumber) {
@@ -50,6 +56,10 @@ public class ScreenshotService {
     public Point convertToGlobal(Point point) {
         return new Point(screenBounds.x + point.x, screenBounds.y + point.y);
     }
+    public java.awt.Point convertToGlobal(java.awt.Point point) {
+        return new java.awt.Point(screenBounds.x + point.x, screenBounds.y + point.y);
+    }
+
 
     public String pointToString(Point point) {
         return "(x, y): (" + (int) point.x + ", " + (int) + point.y + ")";
@@ -78,8 +88,12 @@ public class ScreenshotService {
     }
 
     public BufferedImage screenshotBI() {
-        return screenshotBI(screenBounds);
+        Rectangle rectangle = new Rectangle();
+        rectangle.width = screenBounds.width + screenBounds.x;
+        rectangle.height = screenBounds.height;
+        return screenshotBI(rectangle);
     }
+
     public BufferedImage screenshotBI(Rectangle bounds) {
         return robot.createScreenCapture(bounds);
     }
