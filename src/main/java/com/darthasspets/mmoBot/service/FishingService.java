@@ -1,7 +1,7 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
-import com.wowBot.wowBot.gameState.GameState;
-import com.wowBot.wowBot.mapper.MatMapper;
+import com.darthasspets.mmoBot.gameState.GameState;
+import com.darthasspets.mmoBot.mapper.MatMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.opencv.core.Core;

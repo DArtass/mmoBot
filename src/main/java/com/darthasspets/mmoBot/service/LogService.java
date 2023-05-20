@@ -1,6 +1,6 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
-import com.wowBot.wowBot.mapper.MatMapper;
+import com.darthasspets.mmoBot.mapper.MatMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.opencv.core.Mat;
@@ -18,7 +18,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class LogService {
-    static String LOGPATH = "D:/YandexDisk/WowBotLogs";
+    static String LOGPATH = "D:/YandexDisk/_old/WowBotLogs";
     ScreenshotService screenshotService;
     MatMapper matMapper;
 

@@ -1,7 +1,7 @@
-package com.wowBot.wowBot.controller;
+package com.darthasspets.mmoBot.controller;
 
-import com.wowBot.wowBot.aboutMe.AboutMe;
-import com.wowBot.wowBot.service.PixelReadingService;
+import com.darthasspets.mmoBot.aboutMe.AboutMe;
+import com.darthasspets.mmoBot.service.PixelReadingService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ public class MainController {
     }
 
     @GetMapping("/pixelInfo")
-    public String pixelInfo(Model model) {
+    public String pixelInfo() {
         for (int i = 0; i < 10; i++) {
             pixelReadingService.getPixelInfo();
             try {

@@ -1,6 +1,6 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
-import com.wowBot.wowBot.gameState.GameState;
+import com.darthasspets.mmoBot.gameState.GameState;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
@@ -25,36 +25,17 @@ public class MainService {
         this.screenshotService = screenshotService;
         this.gameState = gameState;
     }
-    public void runGameBot(int countActsInLogS, int maxCountErrorsS, int commandPetCountS, int screenNumberS,
-                          String stopTimeStringS, int botType) {
-        gameState.setCommandPetCount(commandPetCountS);
-        gameState.setCurrentPetTeam(commandPetCountS);
-        gameState.setCountActsInLog(countActsInLogS);
-        gameState.setMaxCountErrors(maxCountErrorsS);
-        gameState.setScreenNumber(screenNumberS);
-        gameState.setFishingActive(botType == 0);
-        gameState.setPetBattleActive(!(botType == 0));
 
-        char[] ct = stopTimeStringS.toCharArray();
-        /*todo replace to date format
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String formattedDate = formatter.format(source.getCreatedDate());*/
+    public void runMMOBot(int countActsInLogS, int maxCountErrorsS, int commandPetCountS, int screenNumberS,
+                          String stopTimeStringS, int botType, int gameType) {
 
-        if (ct.length > 4) {
-            long h = Long.parseLong(String.valueOf(ct[0]) + ct[1]) * 60 * 60 * 1000;
-            long m = Long.parseLong(String.valueOf(ct[3]) + ct[4]) * 60 * 1000;
-            if (!(h == 0) && !(m == 0)) {
-                Long currentTimeMillis = System.currentTimeMillis();
-                gameState.setStopTime(currentTimeMillis / 1000 / 60 / 60 / 24 * 1000 * 60 * 60 * 24 + h + m - 6 * 60 * 60 * 1000);
-                if (gameState.getStopTime() < currentTimeMillis)
-                    gameState.setStopTime(gameState.getStopTime() + 24 * 60 * 60 * 1000);
-            }
-        }
-        screenshotService.changeScreenNumber(screenNumberS);
+        gameState.initialization(countActsInLogS, maxCountErrorsS, commandPetCountS, screenNumberS,
+                stopTimeStringS, botType, gameType);
 
         //todo logService.recordVideo();
 
-        windowService.activateWowWindow();
+        screenshotService.changeScreenNumber(screenNumberS);
+        windowService.activateGameWindow(gameType);
 
         long currentTimeMillis = System.currentTimeMillis();
         while (!(gameState.getCountErrors() > gameState.getMaxCountErrors()) &&
@@ -63,13 +44,14 @@ public class MainService {
             pixelReadingService.checkState();
 
             currentTimeMillis = System.currentTimeMillis();
-            while (!gameState.isPaused() && (gameState.isFishingActive() || gameState.isPetBattleActive()) &&
+            while (!gameState.isPaused() &&
+                    (gameState.isFishingActive() || gameState.isPetBattleActive() || gameState.isGatheringActive()) &&
                     (gameState.getCountErrors() < gameState.getMaxCountErrors() + 2) &&
                     (currentTimeMillis - 60000 < gameState.getStopTime())) {
 
                 if (gameState.isNeedExit()) {
                     gameActionService.closeGame();
-                    windowService.activateBNWindow();
+                    windowService.activateGameWindow(gameType);
                     pixelReadingService.checkState();
                 }
                 if (gameState.isNeedEnter()) {
@@ -77,8 +59,8 @@ public class MainService {
                 }
 
                 currentTimeMillis = System.currentTimeMillis();
-                windowService.activateWowWindow();
-                gameState.setCountActs(gameState.getCountActs()+1);
+                windowService.activateGameWindow(gameType);
+                gameState.setCountActs(gameState.getCountActs() + 1);
 
                 if (gameState.getCountActs() > gameState.getCountActsInLog() ||
                         gameState.getCountErrors() > gameState.getMaxCountErrors()) {
@@ -90,6 +72,8 @@ public class MainService {
                     fishing();
                 else if (gameState.isPetBattleActive())
                     petBattle();
+                else if (gameState.isGatheringActive())
+                    gathering();
 
                 pixelReadingService.checkState();
 
@@ -101,7 +85,18 @@ public class MainService {
             }
         }
     }
+
+    private void gathering() {
+        System.out.println("start circle gathering");
+        var endGather = 60;
+        for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < endGather; i++) {
+            gameActionService.pressE();
+        }
+        gameState.setCountErrors(0);
+    }
+
     private void petBattle() {
+        System.out.println("start circle petBattle");
         gameState.setCurrentPetTeam(gameState.getCurrentPetTeam() - 1);
         if (gameState.getCurrentPetTeam() < 1)
             gameState.setCurrentPetTeam(gameState.getCommandPetCount());
@@ -116,7 +111,9 @@ public class MainService {
         }
         gameState.setCountErrors(0);
     }
+
     private void fishing() {
+        System.out.println("start circle fishing");
         /* todo moving
         if (gameActionService.needReBuff(8 * 60 * 60))
             goToBuff();
@@ -170,14 +167,17 @@ public class MainService {
         gameActionService.pitchTo(0);
         gameActionService.stopMoving();
     }
+
     private void rotationHelper() {
         if (gameState.isPetBattleActive())
             gameActionService.pressSpace();
     }
+
     public void pause() {
         System.out.println("Paused");
         gameState.setPaused(true);
     }
+
     public void resume() {
         System.out.println("UnPaused");
         gameState.setPaused(false);
