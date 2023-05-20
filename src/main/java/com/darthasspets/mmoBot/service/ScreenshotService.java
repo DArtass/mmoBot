@@ -1,9 +1,13 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
-import com.wowBot.wowBot.gameState.GameState;
+import com.darthasspets.mmoBot.gameState.GameState;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -92,5 +96,15 @@ public class ScreenshotService {
 
     public BufferedImage screenshotBI(Rectangle bounds) {
         return robot.createScreenCapture(bounds);
+    }
+
+    public Mat markRectangle(Mat mat, Rectangle rectangle) {
+        Mat output = new Mat();
+        mat.copyTo(output);
+        Rect rect = new Rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+
+        Imgproc.rectangle(output, rect, new Scalar(255.0, 239.0, 0.0));
+
+        return output;
     }
 }

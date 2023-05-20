@@ -1,6 +1,6 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
-import com.wowBot.wowBot.gameState.GameState;
+import com.darthasspets.mmoBot.gameState.GameState;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -144,16 +144,20 @@ public class PixelReadingService {
     }
 
     public void checkState() {
-        if (isPetBattleActive()) {
-            System.out.println("Pet Battle Activated");
-            gameState.setPetBattleActive(true);
-            gameState.setFishingActive(false);
-        }
+        if (gameState.isWowActive()) {
+            if (isPetBattleActive()) {
+                System.out.println("Pet Battle Activated");
+                gameState.setPetBattleActive(true);
+                gameState.setFishingActive(false);
+            }
 
-        if (isFishBattleActive()) {
-            System.out.println("Fish Battle Activated");
-            gameState.setPetBattleActive(false);
-            gameState.setFishingActive(true);
+            if (isFishBattleActive()) {
+                System.out.println("Fish Battle Activated");
+                gameState.setPetBattleActive(false);
+                gameState.setFishingActive(true);
+            }
+        } else {
+            gameState.setGatheringActive(true);
         }
 
         if (isPaused()) {
@@ -166,12 +170,11 @@ public class PixelReadingService {
             gameState.setPaused(false);
         }
 
-        if (!gameState.isPetBattleActive()) {
+        /*todo check logout
+         if (!gameState.isPetBattleActive()) {
             gameState.setNeedExit(isNeedExit());
             gameState.setNeedEnter(isNeedEnter());
         }
-
-        /*todo check logout
         isInGame()
         gameState.setPetBattleActive(isPixelColor(new Point(15, 15), new Color(0,0,0)));
         gameState.setFishingActive(isPixelColor(new Point(15, 15), new Color(255,255,255)));*/

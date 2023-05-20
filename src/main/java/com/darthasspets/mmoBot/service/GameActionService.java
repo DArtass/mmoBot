@@ -1,6 +1,6 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
-import com.wowBot.wowBot.gameState.GameState;
+import com.darthasspets.mmoBot.gameState.GameState;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.opencv.core.Point;
@@ -55,12 +55,6 @@ public class GameActionService {
         robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);
     }
 
-    public void pressSpace() {
-        robot.keyPress(KeyEvent.VK_SPACE);
-        robot.keyRelease(KeyEvent.VK_SPACE);
-        sleep((long) (500L + Math.random() * 500L));
-    }
-
     public void cursorMove(Point point) {
         //Point resPoint = screenshotService.convertToGlobal(point);
         robot.mouseMove((int) point.x, (int) point.y);
@@ -69,6 +63,19 @@ public class GameActionService {
     public void cursorMove() {
         Rectangle rectangle = gameState.getScreenBounds();
         cursorMove(screenshotService.convertToGlobal(new Point(rectangle.width / 2, rectangle.height / 2)));
+    }
+
+    public void pressSpace() {
+        robot.keyPress(KeyEvent.VK_SPACE);
+        robot.keyRelease(KeyEvent.VK_SPACE);
+        sleep((long) (500L + Math.random() * 500L));
+    }
+
+    public void pressE() {
+        System.out.println("pressE");
+        robot.keyPress(KeyEvent.VK_E);
+        robot.keyRelease(KeyEvent.VK_E);
+        sleep((long) (500L + Math.random() * 500L));
     }
 
     public void changePetCommand(int commandNumber) {

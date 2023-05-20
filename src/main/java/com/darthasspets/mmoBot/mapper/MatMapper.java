@@ -1,4 +1,4 @@
-package com.wowBot.wowBot.mapper;
+package com.darthasspets.mmoBot.mapper;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;

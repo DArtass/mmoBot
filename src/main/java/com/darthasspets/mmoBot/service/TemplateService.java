@@ -1,4 +1,4 @@
-package com.wowBot.wowBot.service;
+package com.darthasspets.mmoBot.service;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
