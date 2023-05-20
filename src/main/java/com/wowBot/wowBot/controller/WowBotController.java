@@ -1,19 +1,19 @@
 package com.wowBot.wowBot.controller;
 
-import com.wowBot.wowBot.service.*;
-import org.opencv.core.Point;
+import com.wowBot.wowBot.service.MainService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Controller
 public class WowBotController {
 
-    private MainService mainService;
+    MainService mainService;
 
     public WowBotController(MainService mainService) {
         this.mainService = mainService;

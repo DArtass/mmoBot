@@ -1,6 +1,8 @@
 package com.wowBot.wowBot.service;
 
 import com.wowBot.wowBot.mapper.MatMapper;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.opencv.core.Mat;
 import org.opencv.highgui.HighGui;
 import org.opencv.videoio.VideoCapture;
@@ -13,11 +15,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class LogService {
-    private ScreenshotService screenshotService;
-    private MatMapper matMapper;
-    private static final String LOGPATH = "D:/YandexDisk/WowBotLogs";
+    static String LOGPATH = "D:/YandexDisk/WowBotLogs";
+    ScreenshotService screenshotService;
+    MatMapper matMapper;
 
     public LogService(ScreenshotService screenshotService, MatMapper matMapper) {
         this.screenshotService = screenshotService;
@@ -66,6 +69,7 @@ public class LogService {
         }
 
     }
+
     public void saveScreenshot() {
         try {
             System.out.println("saveScreenshot");

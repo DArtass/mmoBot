@@ -1,6 +1,8 @@
 package com.wowBot.wowBot.service;
 
 import com.wowBot.wowBot.gameState.GameState;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
@@ -10,22 +12,25 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Service
 public class ScreenshotService {
 
+    final GameState gameState;
+    Robot robot;
+
     {
-        System.setProperty("java.awt.headless","false");
+        System.setProperty("java.awt.headless", "false");
     }
-    private Robot robot;
-    private GameState gameState;
 
     //@Lazy
     public ScreenshotService(GameState gameState) {
         this.gameState = gameState;
         try {
             this.robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
         }
-        catch (AWTException e) {}
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] screens = ge.getScreenDevices();
         gameState.setScreenBounds(screens[gameState.getScreenNumber()].getDefaultConfiguration().getBounds());
@@ -46,18 +51,20 @@ public class ScreenshotService {
     public Point convertToGlobal(Point point) {
         return new Point(gameState.getScreenBounds().x + point.x, gameState.getScreenBounds().y + point.y);
     }
+
     public java.awt.Point convertToGlobal(java.awt.Point point) {
         return new java.awt.Point(gameState.getScreenBounds().x + point.x, gameState.getScreenBounds().y + point.y);
     }
 
 
     public String pointToString(Point point) {
-        return "(x, y): (" + (int) point.x + ", " + (int) + point.y + ")";
+        return "(x, y): (" + (int) point.x + ", " + (int) point.y + ")";
     }
 
     public byte[] screenshot() {
         return screenshot(gameState.getScreenBounds());
     }
+
     public byte[] screenshot(Rectangle bounds) {
         BufferedImage screenCapture = robot.createScreenCapture(bounds);
 
@@ -69,8 +76,7 @@ public class ScreenshotService {
             baos.flush();
             jpegBytes = baos.toByteArray();
             baos.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             jpegBytes = null;
         }
 

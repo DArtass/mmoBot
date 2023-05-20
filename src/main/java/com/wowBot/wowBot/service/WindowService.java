@@ -16,9 +16,11 @@ public class WindowService {
     public WindowService() {
         try {
             URL activateURL = getClass().getResource("/activateWow.vbs");
+            assert activateURL != null;
             File file = new File(activateURL.toURI());
             ACTIVATE_WOW_SCRIPT_PATH = file.getAbsolutePath();
             activateURL = getClass().getResource("/activateBN.vbs");
+            assert activateURL != null;
             file = new File(activateURL.toURI());
             ACTIVATE_BN_SCRIPT_PATH = file.getAbsolutePath();
         }
@@ -30,9 +32,7 @@ public class WindowService {
         System.out.println("activate Wow Window");
         try {
             Runtime.getRuntime().exec("cscript " + ACTIVATE_WOW_SCRIPT_PATH).waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -40,9 +40,7 @@ public class WindowService {
         System.out.println("activate BN Window");
         try {
             Runtime.getRuntime().exec("cscript " + ACTIVATE_BN_SCRIPT_PATH).waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }

@@ -17,6 +17,7 @@ public class TemplateService {
     public TemplateService() {
         InputStream resourceAsStream = getClass().getResourceAsStream("/static/Float.jpg");
         try {
+            assert resourceAsStream != null;
             FLOAT_BYTES = resourceAsStream.readAllBytes();
             resourceAsStream.close();
         }

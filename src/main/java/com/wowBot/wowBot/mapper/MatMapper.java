@@ -20,7 +20,7 @@ public class MatMapper {
     public BufferedImage map(Mat mat) {
         MatOfByte matOfByte = new MatOfByte();
         Imgcodecs.imencode(".jpg", mat, matOfByte);
-        BufferedImage bi = null;
+        BufferedImage bi;
         try {
             bi = ImageIO.read(new ByteArrayInputStream(matOfByte.toArray()));
         } catch (IOException e) {

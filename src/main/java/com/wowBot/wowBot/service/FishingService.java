@@ -2,17 +2,20 @@ package com.wowBot.wowBot.service;
 
 import com.wowBot.wowBot.gameState.GameState;
 import com.wowBot.wowBot.mapper.MatMapper;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class FishingService {
-    private ScreenshotService screenshotService;
-    private MatMapper matMapper;
-    private TemplateService templateService;
-    private GameState gameState;
+    ScreenshotService screenshotService;
+    MatMapper matMapper;
+    TemplateService templateService;
+    GameState gameState;
 
 
     public FishingService(ScreenshotService screenshotService, MatMapper matMapper, TemplateService templateService,

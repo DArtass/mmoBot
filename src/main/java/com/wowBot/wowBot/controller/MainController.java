@@ -2,6 +2,8 @@ package com.wowBot.wowBot.controller;
 
 import com.wowBot.wowBot.aboutMe.AboutMe;
 import com.wowBot.wowBot.service.PixelReadingService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Controller
 public class MainController {
-    private PixelReadingService pixelReadingService;
+    PixelReadingService pixelReadingService;
 
     public MainController(PixelReadingService pixelReadingService) {
         this.pixelReadingService = pixelReadingService;
@@ -19,7 +22,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("name", "Trofimov Alexandr");
+        model.addAttribute("name", "Trofimov Aleksandr");
         return "home";
     }
 
@@ -27,10 +30,9 @@ public class MainController {
     public String about(Model model) {
         ArrayList<AboutMe> al = new ArrayList<>();
 
-        al.add(new AboutMe("31", "#", "Age: "));
-        al.add(new AboutMe("Samara", "https://www.google.ru/maps/place/Samara,+Samara+Oblast", "City: "));
-        al.add(new AboutMe("@GladiatorSanya", "https://t.me/GladiatorSanya", "Telegram: "));
-        al.add(new AboutMe("@darax111", "https://join.skype.com/invite/l5JCpR6CgysG", "Skype: "));
+        al.add(new AboutMe("32", "#", "Age: "));
+        al.add(new AboutMe("Almaty", "https://www.google.ru/maps/place/Samara,+Samara+Oblast", "City: "));
+        al.add(new AboutMe("@AleksandrTrofimovJava", "https://t.me/AleksandrTrofimovJava", "Telegram: "));
         Iterator<AboutMe> ital = al.iterator();
         model.addAttribute("info", ital);
         return "about";

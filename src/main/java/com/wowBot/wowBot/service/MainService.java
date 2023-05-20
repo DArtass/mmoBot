@@ -35,16 +35,15 @@ public class MainService {
         gameState.setFishingActive(botType == 0);
         gameState.setPetBattleActive(!(botType == 0));
 
-        char[] ct = stopTimeStringS.toCharArray(); //todo replace to date format
-        // SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        // String formattedDate = formatter.format(source.getCreatedDate());
-
+        char[] ct = stopTimeStringS.toCharArray();
+        /*todo replace to date format
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = formatter.format(source.getCreatedDate());*/
 
         if (ct.length > 4) {
-            Long h = Long.parseLong("" + ct[0] + ct[1]) * 60 * 60 * 1000;
-            Long m = Long.parseLong("" + ct[3] + ct[4]) * 60 * 1000;
-            if (!(h == 0) && !(m == 0))
-            {
+            long h = Long.parseLong(String.valueOf(ct[0]) + ct[1]) * 60 * 60 * 1000;
+            long m = Long.parseLong(String.valueOf(ct[3]) + ct[4]) * 60 * 1000;
+            if (!(h == 0) && !(m == 0)) {
                 Long currentTimeMillis = System.currentTimeMillis();
                 gameState.setStopTime(currentTimeMillis / 1000 / 60 / 60 / 24 * 1000 * 60 * 60 * 24 + h + m - 6 * 60 * 60 * 1000);
                 if (gameState.getStopTime() < currentTimeMillis)
@@ -57,7 +56,7 @@ public class MainService {
 
         windowService.activateWowWindow();
 
-        Long currentTimeMillis = System.currentTimeMillis();
+        long currentTimeMillis = System.currentTimeMillis();
         while (!(gameState.getCountErrors() > gameState.getMaxCountErrors()) &&
                 (currentTimeMillis - 60000 < gameState.getStopTime())) {
             gameActionService.sleep(2000L);
@@ -118,11 +117,13 @@ public class MainService {
         gameState.setCountErrors(0);
     }
     private void fishing() {
-        //if (gameActionService.needReBuff(8 * 60 * 60))
-        //    goToBuff();
-        //    gameActionService.setFishingRoad();
-        //    gameActionService.firimBall();
-        //    gameActionService.setBait();
+        /* todo moving
+        if (gameActionService.needReBuff(8 * 60 * 60))
+            goToBuff();
+            gameActionService.setFishingRoad();
+            gameActionService.firimBall();
+            gameActionService.setBait();
+         */
 
         if (pixelReadingService.isNeedReBuff(60 * 20)) {
             gameActionService.sellJunk();
