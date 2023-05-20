@@ -1,5 +1,6 @@
 package com.wowBot.wowBot.service;
 
+import com.wowBot.wowBot.gameState.GameState;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
@@ -15,49 +16,38 @@ public class ScreenshotService {
     {
         System.setProperty("java.awt.headless","false");
     }
-
     private Robot robot;
-    private Rectangle screenBounds;
-    private int screenNumber = 1;
-    private Rectangle floatBounds;
-    private Rectangle floatScreenBounds;
+    private GameState gameState;
 
     //@Lazy
-    public ScreenshotService() {
+    public ScreenshotService(GameState gameState) {
+        this.gameState = gameState;
         try {
             this.robot = new Robot();
         }
         catch (AWTException e) {}
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] screens = ge.getScreenDevices();
-        screenBounds = screens[screenNumber].getDefaultConfiguration().getBounds();
+        gameState.setScreenBounds(screens[gameState.getScreenNumber()].getDefaultConfiguration().getBounds());
 
-        floatBounds = new Rectangle((int) (screenBounds.width * 0.4), 0, (int) (screenBounds.width * 0.2), (int) (screenBounds.height * 0.2));
-        floatScreenBounds = new Rectangle((int) (screenBounds.width * 0.4) + screenBounds.x, 0, (int) (screenBounds.width * 0.2), (int) (screenBounds.height * 0.2));
-    }
-
-    public Rectangle getScreenBounds() {
-        return screenBounds;
-    }
-    public Rectangle getFloatBounds() {
-        return floatBounds;
-    }
-    public Rectangle getFloatScreenBounds() {
-        return floatScreenBounds;
+        gameState.setFloatBounds(new Rectangle((int) (gameState.getScreenBounds().width * 0.4), 0, (int) (gameState.getScreenBounds().width * 0.2),
+                (int) (gameState.getScreenBounds().height * 0.2)));
+        gameState.setFloatScreenBounds(new Rectangle((int) (gameState.getScreenBounds().width * 0.4) + gameState.getScreenBounds().x,
+                0, (int) (gameState.getScreenBounds().width * 0.2), (int) (gameState.getScreenBounds().height * 0.2)));
     }
 
     public void changeScreenNumber(int screenNumber) {
-        this.screenNumber = screenNumber;
+        gameState.setScreenNumber(screenNumber);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] screens = ge.getScreenDevices();
-        screenBounds = screens[screenNumber].getDefaultConfiguration().getBounds();
+        gameState.setScreenBounds(screens[gameState.getScreenNumber()].getDefaultConfiguration().getBounds());
     }
 
     public Point convertToGlobal(Point point) {
-        return new Point(screenBounds.x + point.x, screenBounds.y + point.y);
+        return new Point(gameState.getScreenBounds().x + point.x, gameState.getScreenBounds().y + point.y);
     }
     public java.awt.Point convertToGlobal(java.awt.Point point) {
-        return new java.awt.Point(screenBounds.x + point.x, screenBounds.y + point.y);
+        return new java.awt.Point(gameState.getScreenBounds().x + point.x, gameState.getScreenBounds().y + point.y);
     }
 
 
@@ -66,7 +56,7 @@ public class ScreenshotService {
     }
 
     public byte[] screenshot() {
-        return screenshot(screenBounds);
+        return screenshot(gameState.getScreenBounds());
     }
     public byte[] screenshot(Rectangle bounds) {
         BufferedImage screenCapture = robot.createScreenCapture(bounds);
@@ -89,8 +79,8 @@ public class ScreenshotService {
 
     public BufferedImage screenshotBI() {
         Rectangle rectangle = new Rectangle();
-        rectangle.width = screenBounds.width + screenBounds.x;
-        rectangle.height = screenBounds.height;
+        rectangle.width = gameState.getScreenBounds().width + gameState.getScreenBounds().x;
+        rectangle.height = gameState.getScreenBounds().height;
         return screenshotBI(rectangle);
     }
 

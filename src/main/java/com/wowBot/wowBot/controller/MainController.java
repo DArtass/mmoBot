@@ -1,4 +1,4 @@
-package com.wowBot.wowBot.Controller;
+package com.wowBot.wowBot.controller;
 
 import com.wowBot.wowBot.aboutMe.AboutMe;
 import com.wowBot.wowBot.service.PixelReadingService;
@@ -46,6 +46,6 @@ public class MainController {
                 e.printStackTrace();
             }
         }
-        return "redirect:";
+        return "home";
     }
 }

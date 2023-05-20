@@ -10,23 +10,36 @@ import java.net.URL;
 @Service
 public class WindowService {
 
-    private static String ACTIVATE_SCRIPT_PATH;
+    private static String ACTIVATE_WOW_SCRIPT_PATH;
+    private static String ACTIVATE_BN_SCRIPT_PATH;
 
     public WindowService() {
         try {
-            URL activateURL = getClass().getResource("/activate.vbs");
+            URL activateURL = getClass().getResource("/activateWow.vbs");
             File file = new File(activateURL.toURI());
-            ACTIVATE_SCRIPT_PATH = file.getAbsolutePath();
+            ACTIVATE_WOW_SCRIPT_PATH = file.getAbsolutePath();
+            activateURL = getClass().getResource("/activateBN.vbs");
+            file = new File(activateURL.toURI());
+            ACTIVATE_BN_SCRIPT_PATH = file.getAbsolutePath();
         }
         catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
     }
-
     public void activateWowWindow() {
+        System.out.println("activate Wow Window");
         try {
-            Runtime.getRuntime().exec("cscript " + ACTIVATE_SCRIPT_PATH).waitFor();
+            Runtime.getRuntime().exec("cscript " + ACTIVATE_WOW_SCRIPT_PATH).waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void activateBNWindow() {
+        System.out.println("activate BN Window");
+        try {
+            Runtime.getRuntime().exec("cscript " + ACTIVATE_BN_SCRIPT_PATH).waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {

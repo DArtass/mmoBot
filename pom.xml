@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wowBot</groupId>
-	<artifactId>wowBot</artifactId>
+	<artifactId>gameBot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>wowBot</name>
 	<description>Spring project for wow fishing bot </description>
@@ -40,6 +40,17 @@
 			<groupId>org.openpnp</groupId>
 			<artifactId>opencv</artifactId>
 			<version>4.5.1-2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.telegram</groupId>
+			<artifactId>telegrambots-spring-boot-starter</artifactId>
+			<version>6.4.0</version>
 		</dependency>
 	</dependencies>
 
