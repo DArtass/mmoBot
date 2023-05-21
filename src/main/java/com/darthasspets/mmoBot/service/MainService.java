@@ -4,6 +4,8 @@ import com.darthasspets.mmoBot.gameState.GameState;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
+import java.awt.event.KeyEvent;
+
 @Service
 public class MainService {
     private final FishingService fishingService;
@@ -88,9 +90,9 @@ public class MainService {
 
     private void gathering() {
         System.out.println("start circle gathering");
-        var endGather = 60;
+        var endGather = 20;
         for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < endGather; i++) {
-            gameActionService.pressE();
+            gameActionService.gatherSafe();
         }
         gameState.setCountErrors(0);
     }
@@ -105,7 +107,7 @@ public class MainService {
         for (int i = -1; gameState.isPetBattleActive() && !gameState.isPaused() &&
                 i < endChange; i++) {
             for (int i1 = 0; i1 < 3 && gameState.isPetBattleActive() && !gameState.isPaused(); i1++)
-                gameActionService.pressSpace();
+                gameActionService.pressKey(KeyEvent.VK_SPACE);
             //if (!pixelReadingService.inMasterBattle())
             gameActionService.changePetCommand(i);
         }
@@ -170,7 +172,7 @@ public class MainService {
 
     private void rotationHelper() {
         if (gameState.isPetBattleActive())
-            gameActionService.pressSpace();
+            gameActionService.pressKey(KeyEvent.VK_SPACE);
     }
 
     public void pause() {
