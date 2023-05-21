@@ -65,17 +65,32 @@ public class GameActionService {
         cursorMove(screenshotService.convertToGlobal(new Point(rectangle.width / 2, rectangle.height / 2)));
     }
 
-    public void pressSpace() {
-        robot.keyPress(KeyEvent.VK_SPACE);
-        robot.keyRelease(KeyEvent.VK_SPACE);
-        sleep((long) (500L + Math.random() * 500L));
+    public void pressKey(int keyEvent) {
+        pressKey(keyEvent, 500L);
     }
 
-    public void pressE() {
-        System.out.println("pressE");
-        robot.keyPress(KeyEvent.VK_E);
-        robot.keyRelease(KeyEvent.VK_E);
-        sleep((long) (500L + Math.random() * 500L));
+    public void pressKey(int keyEvent, long millisSleep) {
+        robot.keyPress(keyEvent);
+        robot.keyRelease(keyEvent);
+        sleep((long) (millisSleep + Math.random() * millisSleep));
+    }
+
+    public void gather() {
+        System.out.println("gather");
+        var gatherReps = 10;
+        for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < gatherReps; i++) {
+            pressKey(KeyEvent.VK_E);
+        }
+    }
+
+    public void gatherSafe() {
+        System.out.println("gatherSafe");
+        pressKey(KeyEvent.VK_R);
+        gather();
+        pressKey(KeyEvent.VK_Q);
+        gather();
+        pressKey(KeyEvent.VK_F);
+        gather();
     }
 
     public void changePetCommand(int commandNumber) {
