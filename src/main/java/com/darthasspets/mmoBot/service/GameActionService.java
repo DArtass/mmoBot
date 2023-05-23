@@ -3,12 +3,14 @@ package com.darthasspets.mmoBot.service;
 import com.darthasspets.mmoBot.gameState.GameState;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Service
 public class GameActionService {
@@ -80,14 +82,14 @@ public class GameActionService {
     }
 
     public void gather() {
-        logService.info("gather");
+        log.info("gather");
         var gatherReps = 10;
         for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < gatherReps; i++) {
             pressKey(KeyEvent.VK_E);
         }
     }
 
-    public void gatherSafe() {
+    public void gatherFight() {
         logService.info("gatherSafe");
         pressKey(KeyEvent.VK_R);
         gather();
@@ -99,31 +101,27 @@ public class GameActionService {
 
     public void gatherSide(int side, String sideName, int countSide) {
         for (int i = 0; i < countSide && !gameState.isPaused(); i++) {
-            logService.info("gatherSide " + sideName + " " + i);
+            log.info("gatherSide " + sideName + " " + i);
             gather();
             pressKey(side, 0, 1000);
         }
     }
 
     public void gatherSquare() {
-        logService.info("gatherSquare");
+        log.info("gatherSquare");
         logService.saveScreenshot();
         gatherSide(KeyEvent.VK_D, "D", 7);
         gatherSide(KeyEvent.VK_A, "A", 7);
+    }
 
-        /*pressKey(KeyEvent.VK_W, 0, 500);
-        gatherSafe();
-        pressKey(KeyEvent.VK_W, 0, 500);
-        gatherSafe();
-        pressKey(KeyEvent.VK_W, 0, 500);
-        gatherSafe();*/
-
-        /*pressKey(KeyEvent.VK_S, 0, 2000);
-        gatherSafe();
-        pressKey(KeyEvent.VK_S, 0, 2000);
-        gatherSafe();
-        pressKey(KeyEvent.VK_S, 0, 2000);
-        gatherSafe();*/
+    public void gathering() {
+        log.info("Start circle gathering");
+        logService.saveScreenshot();
+        pressKey(KeyEvent.VK_S);
+        for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < 50; i++) {
+            gather();
+        }
+        gameState.setCountErrors(0);
     }
 
     public void changePetCommand(int commandNumber) {

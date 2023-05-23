@@ -1,11 +1,13 @@
 package com.darthasspets.mmoBot.service;
 
 import com.darthasspets.mmoBot.gameState.GameState;
+import lombok.extern.slf4j.Slf4j;
 import org.opencv.core.Point;
 import org.springframework.stereotype.Service;
 
 import java.awt.event.KeyEvent;
 
+@Slf4j
 @Service
 public class MainService {
     private final FishingService fishingService;
@@ -75,7 +77,7 @@ public class MainService {
                 else if (gameState.isPetBattleActive())
                     petBattle();
                 else if (gameState.isGatheringActive())
-                    gathering();
+                    gameActionService.gathering();
 
                 pixelReadingService.checkState();
 
@@ -86,16 +88,6 @@ public class MainService {
                 }
             }
         }
-    }
-
-    private void gathering() {
-        logService.info("start circle gathering");
-        var endGather = 20;
-        for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < endGather; i++) {
-            logService.saveScreenshot();
-            gameActionService.gatherSquare();
-        }
-        gameState.setCountErrors(0);
     }
 
     private void petBattle() {
@@ -144,36 +136,12 @@ public class MainService {
         if (!checkPecking) {
             System.out.println("Not pecked");
             gameState.setCountErrors(gameState.getCountErrors()+1);
-        }
-        else {
+        } else {
             System.out.println("Pecked");
             gameState.setCountErrors(0);
         }
         gameActionService.cursorMove(xy);
         gameActionService.rightMouse();
-    }
-
-    private void goToBuff() {
-        gameActionService.turnTo(6);
-        gameActionService.callMount();
-        gameActionService.moveUp(2000);
-        gameActionService.moveToPoint(new Point(34.637349843979, 56.337487697601), 0.3);
-        gameActionService.moveDown(3000);
-        gameActionService.moveToPoint(new Point(34.637349843979, 56.337487697601), 0.1);
-        gameActionService.interactionWithBuff();
-
-        gameActionService.turnTo(3);
-        gameActionService.moveUp(2000);
-        gameActionService.moveToPoint(new Point(34.417217969894, 65.928483009338), 0.3);
-        gameActionService.moveDown(3000);
-        gameActionService.turnTo(6);
-        gameActionService.pitchTo(0);
-        gameActionService.stopMoving();
-    }
-
-    private void rotationHelper() {
-        if (gameState.isPetBattleActive())
-            gameActionService.pressKey(KeyEvent.VK_SPACE);
     }
 
     public void pause() {
@@ -184,5 +152,25 @@ public class MainService {
     public void resume() {
         System.out.println("UnPaused");
         gameState.setPaused(false);
+    }
+
+    public void leftSlide() {
+        log.info("leftSlide");
+        gameActionService.pressKey(KeyEvent.VK_D, 0, 500);
+    }
+
+    public void rightSlide() {
+        log.info("rightSlide");
+        gameActionService.pressKey(KeyEvent.VK_A, 0, 500);
+    }
+
+    public void backSlide() {
+        log.info("backSlide");
+        gameActionService.pressKey(KeyEvent.VK_S, 0, 500);
+    }
+
+    public void frontSlide() {
+        log.info("frontSlide");
+        gameActionService.pressKey(KeyEvent.VK_W, 0, 500);
     }
 }
