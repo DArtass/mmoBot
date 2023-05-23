@@ -18,7 +18,6 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class LogService {
-    static String LOGPATH = "D:/YandexDisk/_old/WowBotLogs";
     ScreenshotService screenshotService;
     MatMapper matMapper;
 
@@ -46,7 +45,7 @@ public class LogService {
                     Date currDate = new Date();
 
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-                    String folderPath = LOGPATH + "/videoRecords/" + formatter.format(currDate);
+                    String folderPath = "${logService.screenshot.path}" + "/videoRecords/" + formatter.format(currDate);
                     formatter = new SimpleDateFormat("HHmmss");
                     String fileName = formatter.format(currDate) + ".jpg";
 
@@ -70,13 +69,19 @@ public class LogService {
 
     }
 
+    public void info(String message) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        System.out.println(formatter.format(new Date()) + " " + message);
+    }
+
     public void saveScreenshot() {
         try {
             System.out.println("saveScreenshot");
             Date currDate = new Date();
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-            String folderPath = LOGPATH + "/screenshots/" + formatter.format(currDate);
+            String folderPath = "D:/YandexDisk/_old/WowBotLogs/screenshots/" + formatter.format(currDate);
+            //String folderPath = "C:/Users/a.trofimov/YandexDisk/_old/mmoBotLogs/screenshots/" + formatter.format(currDate);
             formatter = new SimpleDateFormat("HHmmss");
             String fileName = formatter.format(currDate) + ".jpg";
 
