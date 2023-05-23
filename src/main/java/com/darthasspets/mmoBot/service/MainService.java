@@ -89,16 +89,17 @@ public class MainService {
     }
 
     private void gathering() {
-        System.out.println("start circle gathering");
+        logService.info("start circle gathering");
         var endGather = 20;
         for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < endGather; i++) {
-            gameActionService.gatherSafe();
+            logService.saveScreenshot();
+            gameActionService.gatherSquare();
         }
         gameState.setCountErrors(0);
     }
 
     private void petBattle() {
-        System.out.println("start circle petBattle");
+        logService.info("start circle petBattle");
         gameState.setCurrentPetTeam(gameState.getCurrentPetTeam() - 1);
         if (gameState.getCurrentPetTeam() < 1)
             gameState.setCurrentPetTeam(gameState.getCommandPetCount());

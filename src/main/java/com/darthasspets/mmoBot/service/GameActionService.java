@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 public class GameActionService {
     final ScreenshotService screenshotService;
     final PixelReadingService pixelReadingService;
+    final LogService logService;
     final GameState gameState;
     Robot robot;
 
@@ -25,7 +26,7 @@ public class GameActionService {
         }
     }
 
-    public GameActionService(ScreenshotService screenshotService, PixelReadingService pixelReadingService, GameState gameState) {
+    public GameActionService(ScreenshotService screenshotService, PixelReadingService pixelReadingService, GameState gameState, LogService logService) {
         try {
             this.robot = new Robot();
         } catch (AWTException e) {
@@ -33,6 +34,7 @@ public class GameActionService {
         }
         this.screenshotService = screenshotService;
         this.pixelReadingService = pixelReadingService;
+        this.logService = logService;
         this.gameState = gameState;
     }
 
@@ -66,17 +68,19 @@ public class GameActionService {
     }
 
     public void pressKey(int keyEvent) {
-        pressKey(keyEvent, 500L);
+        pressKey(keyEvent, 500L, 0);
     }
 
-    public void pressKey(int keyEvent, long millisSleep) {
+    public void pressKey(int keyEvent, long millisSleep, long millisPressed) {
         robot.keyPress(keyEvent);
+        if (millisPressed > 0)
+            sleep(millisPressed);
         robot.keyRelease(keyEvent);
         sleep((long) (millisSleep + Math.random() * millisSleep));
     }
 
     public void gather() {
-        System.out.println("gather");
+        logService.info("gather");
         var gatherReps = 10;
         for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < gatherReps; i++) {
             pressKey(KeyEvent.VK_E);
@@ -84,13 +88,42 @@ public class GameActionService {
     }
 
     public void gatherSafe() {
-        System.out.println("gatherSafe");
+        logService.info("gatherSafe");
         pressKey(KeyEvent.VK_R);
         gather();
         pressKey(KeyEvent.VK_Q);
         gather();
         pressKey(KeyEvent.VK_F);
         gather();
+    }
+
+    public void gatherSide(int side, String sideName, int countSide) {
+        for (int i = 0; i < countSide && !gameState.isPaused(); i++) {
+            logService.info("gatherSide " + sideName + " " + i);
+            gather();
+            pressKey(side, 0, 1000);
+        }
+    }
+
+    public void gatherSquare() {
+        logService.info("gatherSquare");
+        logService.saveScreenshot();
+        gatherSide(KeyEvent.VK_D, "D", 7);
+        gatherSide(KeyEvent.VK_A, "A", 7);
+
+        /*pressKey(KeyEvent.VK_W, 0, 500);
+        gatherSafe();
+        pressKey(KeyEvent.VK_W, 0, 500);
+        gatherSafe();
+        pressKey(KeyEvent.VK_W, 0, 500);
+        gatherSafe();*/
+
+        /*pressKey(KeyEvent.VK_S, 0, 2000);
+        gatherSafe();
+        pressKey(KeyEvent.VK_S, 0, 2000);
+        gatherSafe();
+        pressKey(KeyEvent.VK_S, 0, 2000);
+        gatherSafe();*/
     }
 
     public void changePetCommand(int commandNumber) {
