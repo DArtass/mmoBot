@@ -33,12 +33,6 @@ public class MMOBotController {
         mainService.pause();
     }
 
-    @ApiOperation("Снять с паузы приложение")
-    @GetMapping(value = "/resume")
-    public void resumeMMOBotPostController() {
-        mainService.resume();
-    }
-
     @ApiOperation("Шаг влево")
     @GetMapping(value = "/left")
     public void leftSlide() {

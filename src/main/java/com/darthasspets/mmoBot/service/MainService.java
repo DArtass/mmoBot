@@ -33,6 +33,11 @@ public class MainService {
     public void runMMOBot(int countActsInLogS, int maxCountErrorsS, int commandPetCountS, int screenNumberS,
                           String stopTimeStringS, int botType, int gameType) {
 
+        if (gameState.isPaused()) {
+            gameState.setPaused(false);
+            return;
+        }
+
         gameState.initialization(countActsInLogS, maxCountErrorsS, commandPetCountS, screenNumberS,
                 stopTimeStringS, botType, gameType);
 
@@ -147,11 +152,6 @@ public class MainService {
     public void pause() {
         System.out.println("Paused");
         gameState.setPaused(true);
-    }
-
-    public void resume() {
-        System.out.println("UnPaused");
-        gameState.setPaused(false);
     }
 
     public void leftSlide() {

@@ -117,8 +117,8 @@ public class GameActionService {
     public void gathering() {
         log.info("Start circle gathering");
         logService.saveScreenshot();
-        pressKey(KeyEvent.VK_S);
-        for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < 50; i++) {
+        pressKey(KeyEvent.VK_ENTER);
+        for (int i = -1; gameState.isGatheringActive() && !gameState.isPaused() && i < 10; i++) {
             gather();
         }
         gameState.setCountErrors(0);

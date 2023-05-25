@@ -24,7 +24,15 @@
 
         <h1>Settings</h1>
 
+        <a class="nav-link" href="/pause">Pause bot</a>
+        <a class="nav-link" href="/left">left</a>
+        <a class="nav-link" href="/right">right</a>
+        <a class="nav-link" href="/back">back</a>
+        <a class="nav-link" href="/front">front</a>
+
         <form method="post">
+            <input class="btn btn-success" formaction="/run" type="submit"
+                   value="Start bot                                                 "/>
             gameType
             <input class="form-control" max="1" min="0" name="gameType" placeholder="game type: 0 - wow, 1 - nw"
                    type="number" value="1"><br>
@@ -45,19 +53,10 @@
             <input class="form-control" max="2" min="0" name="botType"
                    placeholder="bot type: 0 - fish, 1 - pet, 2 - gathering" type="number" value="2"><br>
 
-            <input class="btn btn-success" formaction="/run" type="submit"
-                   value="Start bot                                                 "/>
+
             <!--<input formaction="/pause" type="submit" class="btn btn-success" value ="Pause bot"/>
             <input formaction="/resume" type="submit" class="btn btn-success" value ="Resume bot"/>-->
         </form>
-
-        <a class="nav-link" href="/pause">Pause bot</a>
-        <a class="nav-link" href="/resume">Resume bot</a>
-        <a class="nav-link" href="/left">left</a>
-        <a class="nav-link" href="/right">right</a>
-        <a class="nav-link" href="/back">back</a>
-        <a class="nav-link" href="/front">front</a>
-
         <footer th:insert="blocks/footer :: footer"></footer>
     </main>
 </div>
