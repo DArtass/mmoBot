@@ -21,24 +21,39 @@ public class MMOBotController {
 
     @ApiOperation("Запуск приложения")
     @PostMapping(value = "/run")
-    public String runMMOBotPostController(@RequestParam int countActsInLog, @RequestParam int maxCountErrors,
-                                          @RequestParam int commandPetCount, @RequestParam int screenNumber,
-                                          @RequestParam String stopTime, @RequestParam int botType, @RequestParam int gameType) {
+    public void runMMOBotPostController(@RequestParam int countActsInLog, @RequestParam int maxCountErrors,
+                                        @RequestParam int commandPetCount, @RequestParam int screenNumber,
+                                        @RequestParam String stopTime, @RequestParam int botType, @RequestParam int gameType) {
         mainService.runMMOBot(countActsInLog, maxCountErrors, commandPetCount, screenNumber, stopTime, botType, gameType);
-        return "home";
     }
 
     @ApiOperation("Пауза приложения")
     @GetMapping(value = "/pause")
-    public String pauseMMOBotPostController() {
+    public void pauseMMOBotPostController() {
         mainService.pause();
-        return "home";
     }
 
-    @ApiOperation("Снять с паузы приложение")
-    @GetMapping(value = "/resume")
-    public String resumeMMOBotPostController() {
-        mainService.resume();
-        return "home";
+    @ApiOperation("Шаг влево")
+    @GetMapping(value = "/left")
+    public void leftSlide() {
+        mainService.leftSlide();
+    }
+
+    @ApiOperation("Шаг вправо")
+    @GetMapping(value = "/right")
+    public void rightSlide() {
+        mainService.rightSlide();
+    }
+
+    @ApiOperation("Шаг назад")
+    @GetMapping(value = "/back")
+    public void backSlide() {
+        mainService.backSlide();
+    }
+
+    @ApiOperation("Шаг вперед")
+    @GetMapping(value = "/front")
+    public void frontSlide() {
+        mainService.frontSlide();
     }
 }

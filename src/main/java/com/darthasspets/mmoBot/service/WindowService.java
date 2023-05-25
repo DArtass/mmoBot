@@ -1,5 +1,6 @@
 package com.darthasspets.mmoBot.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+@Slf4j
 @Service
 public class WindowService {
 
@@ -45,7 +47,7 @@ public class WindowService {
     }
 
     private void activateNWWindow() {
-        System.out.println("activate NW Window");
+        log.info("activate NW Window");
         try {
             Runtime.getRuntime().exec("cscript " + ACTIVATE_NW_SCRIPT_PATH).waitFor();
         } catch (InterruptedException | IOException e) {

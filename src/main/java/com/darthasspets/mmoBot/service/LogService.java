@@ -3,6 +3,7 @@ package com.darthasspets.mmoBot.service;
 import com.darthasspets.mmoBot.mapper.MatMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.opencv.core.Mat;
 import org.opencv.highgui.HighGui;
 import org.opencv.videoio.VideoCapture;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class LogService {
@@ -76,12 +78,12 @@ public class LogService {
 
     public void saveScreenshot() {
         try {
-            System.out.println("saveScreenshot");
+            log.info("saveScreenshot");
             Date currDate = new Date();
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-            String folderPath = "D:/YandexDisk/_old/WowBotLogs/screenshots/" + formatter.format(currDate);
-            //String folderPath = "C:/Users/a.trofimov/YandexDisk/_old/mmoBotLogs/screenshots/" + formatter.format(currDate);
+            //String folderPath = "D:/YandexDisk/_old/mmoBotLogs/screenshots/" + formatter.format(currDate);
+            String folderPath = "./log/screenshots/" + formatter.format(currDate);
             formatter = new SimpleDateFormat("HHmmss");
             String fileName = formatter.format(currDate) + ".jpg";
 
